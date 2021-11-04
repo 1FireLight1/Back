@@ -1,27 +1,28 @@
-const path = require('path');
+//const path = require('path');
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize({
-  host: 'localhost',
-  port: 5432,
+  port: 5433,
   dialect: 'postgres',
-  username: 'postgres',
+  host: 'localhost',
   database: 'jsproject',
-  password: 'gfxrfcbufhtnzdf',
-  models: [__dirname + '/models/*.model.*'],
+  username: 'user',
+  password: '12345',
+  //models: [__dirname + '/models/*.model.*'],
 });
 
-const initDB = async () => {
+// const initDB = async () => 
+async function initDB(){
   try {
     await sequelize.authenticate();
     await sequelize.sync();
     console.log('Sequelize was initialized');
   } 
   catch (error) {
-    console.log(error);
-    process.exit();
+    console.error(error);
+    // process.exit();
   }
-};
+}
 
 module.exports = {
   sequelize,
