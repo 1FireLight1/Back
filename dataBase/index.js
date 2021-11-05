@@ -8,19 +8,20 @@ const sequelize = new Sequelize({
   database: 'jsproject',
   username: 'user',
   password: '12345',
-  //models: [__dirname + '/models/*.model.*'],
 });
 
 // const initDB = async () => 
 async function initDB(){
   try {
     await sequelize.authenticate();
+    //await sequelizeInstance.dropSchema("public",{});
+    //await sequelizeInstance.createSchema("public",{});
     await sequelize.sync();
     console.log('Sequelize was initialized');
   } 
   catch (error) {
     console.error(error);
-    // process.exit();
+    process.exit();
   }
 }
 

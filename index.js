@@ -2,16 +2,18 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
-const apiRouter = require('./controllers/api.controller');
+const apiTodosRouter = require('./controllers/api-todos.controller');
 const testRouter = require('./controllers/test.controller');
 const { notFound, errorHandler, asyncHandler } = require('./middlewares/middlewares');
 const { initDB } = require('./dataBase');
+const apiAuthRouter = require('./controllers/api-auth.controller');
+const apiUserRouter = require('./controllers/api-user.controller');
 
 //Init zone
 const app = express();
 
 //InitDB
- initDB();
+initDB();
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -29,7 +31,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/todos', apiRouter);
+app.use('/api/auth', apiAuthRouter);
+app.use('/api/todos', apiTodosRouter);
+app.use('/api/users', apiUserRouter);
 app.use('/test', testRouter);
 
 app.use(notFound);

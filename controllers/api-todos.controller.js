@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const ErrorResponse = require('../classes/error-response');
-const ToDo = require('../dataBase/models/todo.model');
+const ToDo = require('../dataBase/models/ToDo.model');
 const { asyncHandler } = require('../middlewares/middlewares');
+const User = require('../dataBase/models/User.model');
 
 const router = Router();
 
@@ -15,6 +16,7 @@ function initRoutes() {
 }
 
 async function getToDos(req, res, next) {
+    //const user = await User.create();
     const todos = await ToDo.findAll();
 
     res.status(200).json({ todos });
