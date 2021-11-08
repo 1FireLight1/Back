@@ -33,8 +33,6 @@ User.init(
 );
 
 User.hasMany(Token);
-//Token.belongsTo(User, {foreignKey:userid});
 User.hasMany(ToDo);
-//ToDo.belongsTo(User, {foreignKey:userid});
 
 module.exports = User;

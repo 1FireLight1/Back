@@ -2,7 +2,7 @@ const { Router } = require("express");
 const ErrorResponse = require("../classes/error-response");
 const User = require("../dataBase/models/User.model");
 const { asyncHandler } = require("../middlewares/middlewares");
-const { Op } = require("sequelize");
+const { Op, json } = require("sequelize");
 const Token = require("../dataBase/models/Token.model");
 const { nanoid } = require("nanoid");
 
@@ -41,7 +41,6 @@ async function login(req, res, next) {
     userId: user.id,
     value: nanoid(128),
   });
-
   res.status(200).json({ accessToken: token.value });
 }
 

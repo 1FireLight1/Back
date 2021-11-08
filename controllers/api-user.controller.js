@@ -8,12 +8,12 @@ const router = Router();
 
 function initRoutes() {
   router.get(
-    "/:id",
+    "/me",
     asyncHandler(requireToken),
     asyncHandler(getUserInformation)
   );
   router.patch(
-    "/:id",
+    "/me",
     asyncHandler(requireToken),
     asyncHandler(updateUserInformation)
   );
@@ -21,7 +21,7 @@ function initRoutes() {
 }
 
 async function getUserInformation(req, res, next) {
-  const user = await User.findByPk(req.params.id);
+  const user = await User.findByPk(req.userId);
 
   if (!user) {
     throw new ErrorResponse("No user found", 404);
@@ -31,25 +31,33 @@ async function getUserInformation(req, res, next) {
 }
 
 async function updateUserInformation(req, res, next) {
-  let user = await User.findByPk(req.params.id);
+  let user = await User.findByPk(req.userId);
 
   if (!user) {
     throw new ErrorResponse("No user found", 404);
   }
 
-  await user.update(req.body);
-  user = await User.findByPk(req.params.id); //destroy
+  await user.update(req.body, {
+    returning: true,
+    where: { id: req.userId },
+  });
+  //user = await User.findByPk(req.userId); //destroy
 
   res.status(200).json(user);
 }
 
 async function logoutUser(req, res, next) {
-  let token = await Token.findOne({
+  //console.log(req.csrfToken());
+  // let token = await Token.findOne({
+  //   where: {
+  //     value: req.header("token"),
+  //   },
+  // });
+  await Token.destroy({
     where: {
-      value: req.headers.token,
+      value: req.header("tokenAccess"),
     },
   });
-  await token.destroy();
   res.status(200).json({ message: "Logout..." });
 }
 
