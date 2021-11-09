@@ -14,8 +14,8 @@ const sequelize = new Sequelize({
 async function initDB(){
   try {
     await sequelize.authenticate();
-    //await sequelizeInstance.dropSchema("public",{});
-    //await sequelizeInstance.createSchema("public",{});
+    //await sequelize.dropSchema("public",{});
+    //await sequelize.createSchema("public",{});
     await sequelize.sync();
     console.log('Sequelize was initialized');
   } 

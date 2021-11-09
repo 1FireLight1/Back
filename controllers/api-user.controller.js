@@ -23,21 +23,12 @@ function initRoutes() {
 async function getUserInformation(req, res, next) {
   const user = await User.findByPk(req.userId);
 
-  if (!user) {
-    throw new ErrorResponse("No user found", 404);
-  }
-
   res.status(200).json(user);
 }
 
 async function updateUserInformation(req, res, next) {
-  let user = await User.findByPk(req.userId);
 
-  if (!user) {
-    throw new ErrorResponse("No user found", 404);
-  }
-
-  await user.update(req.body, {
+  let user = await User.update(req.body, {
     returning: true,
     where: { id: req.userId },
   });

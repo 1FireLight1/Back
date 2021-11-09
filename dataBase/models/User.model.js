@@ -33,6 +33,8 @@ User.init(
 );
 
 User.hasMany(Token);
+Token.belongsTo(User, {foreignKey: "userId"});// https://sequelize.org/master/identifiers.html#associations
 User.hasMany(ToDo);
+ToDo.belongsTo(User, {foreignKey: "userId"});
 
 module.exports = User;

@@ -21,22 +21,21 @@ function initRoutes() {
 async function getToDos(req, res, next) {
   //const user = await User.create();
   const todos = await ToDo.findAll({
-      where:
-      {
-        userId: req.userId,
-      }
+    where: {
+      userId: req.userId,
+    },
   });
 
   res.status(200).json({ todos });
 }
 
 async function getToDoById(req, res, next) {
-    const todo = await ToDo.findOne({
-      where: {
-        userId: req.userId,
-        id: req.params.id
-      }
-    });
+  const todo = await ToDo.findOne({
+    where: {
+      userId: req.userId,
+      id: req.params.id,
+    },
+  });
   //const todo = await ToDo.findByPk(req.params.id);
 
   if (!todo) {
@@ -45,49 +44,42 @@ async function getToDoById(req, res, next) {
 
   res.status(200).json(todo);
 }
+
 async function createToDo(req, res, next) {
-  let body = req.body;
-  body.userId = req.userId;
-  const todo = await ToDo.create(body);
+  // let body = req.body;
+  // body.userId = req.userId; //spreadoperator
+  const todo = await ToDo.create({ ...req.body, userId: req.userId });
 
   res.status(200).json(todo);
 }
+
 async function patchToDo(req, res, next) {
-  //let todo = await ToDo.findByPk(req.params.id);
-    let todo = await ToDo.findOne({
-      where: {
-        userId: req.userId,
-        id: req.params.id,
-      },
-    });
-  if (!todo) {
-    throw new ErrorResponse("No todo found", 404);
-  }
-  await todo.update(req.body, {
+  let todo = await ToDo.update(req.body, {
     returning: true,
-    where: { id: req.userId },
+    where: {
+      userId: req.userId,
+      id: req.params.id,
+    },
   });
   res.status(200).json(todo);
 }
+
 async function deleteToDos(req, res, next) {
   await ToDo.destroy({
-      where:{
-        userId: req.userId,
-      }
-  },
-  {
-    truncate: true,
+    where: {
+      userId: req.userId,
+    },
   });
   res.status(200).json({ message: "Deletion complete!" });
 }
+
 async function deleteToDoById(req, res, next) {
-  //const todo = await ToDo.findByPk(req.params.id);
-    const todo = await ToDo.findOne({
-      where: {
-        userId: req.userId,
-        id : req.params.id,
-      },
-    });
+  const todo = await ToDo.findOne({
+    where: {
+      userId: req.userId,
+      id: req.params.id,
+    },
+  });
   if (!todo) {
     throw new ErrorResponse("No todo found", 404);
   }

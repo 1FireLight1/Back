@@ -27,7 +27,7 @@ const errorHandler = (err, _req, res, _next) => {
   });
 };
 const requireToken = async (req, _res, next) => {
-  console.log(req.header);
+  //console.log(req.header);
   let tokenControl = req.header("tokenAccess");
   if (!tokenControl) throw new ErrorResponse("Token doesn't exist", 404);
   let tokenAccess = await Token.findOne({
